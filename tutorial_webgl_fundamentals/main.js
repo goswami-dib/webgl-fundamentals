@@ -11,6 +11,20 @@ function createShader(gl, type, source) {
     gl.deleteShader(shader);
 }
 
+function createProgram(gl, vertexShader, fragmentShader) {
+    var program = gl.createProgram();
+    gl.attachShader(program, vertexShader);
+    gl.attachShader(program, fragmentShader);
+    gl.linkProgram(program);
+    var success = gl.getProgramParameter(program, gl.LINK_STATUS);
+    if(success) {
+        return program;
+    }
+
+    console.log(gl.getProgramInfoLog(program));
+    gl.deleteProgram(program);
+}
+
 var canvas = document.getElementById("c");
 console.log("WebGL Hello world!");
 var gl = canvas.getContext("webgl");
@@ -23,4 +37,9 @@ var fragmentShaderSource = document.getElementById("2d-fragment-shader").text;
 
 var vertexShader = createShader(gl, gl.VERTEX_SHADER, vertexShaderSource);
 var fragmentShader = createShader(gl, gl.FRAGMENT_SHADER, fragmentShaderSource);
+
+var program = createProgram(gl, vertexShader, fragmentShader);
+
+
+
 
